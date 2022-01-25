@@ -1,22 +1,27 @@
 stages:
-  - build
   - test
+  - build
 
 default:
   image: "node:16.13.2-alpine"
-
-install-deps:
-  stage: build
-  script:
-    - yarn install
+  before-script:
+    - echo 'yarn-offline-mirror ".yarn-cache/"' >> .yarnrc
+    - echo 'yarn-offline-mirror-pruning true' >> .yarnrc
+    - yarn install --frozen-lockfile --no-progress
   cache:
     key:
       files:
         - yarn.lock
     paths:
       - node_modules/
+      - .yarn-cache
 
-build-app:
+test:
+  stage: test
+  script:
+    - yarn build
+
+build:
   stage: build
   script:
     - yarn build
@@ -24,8 +29,3 @@ build-app:
     paths:
       - build/
     expire_in: 1 hour
-
-run-tests:
-  stage: test
-  script:
-    - CI=true yarn test
