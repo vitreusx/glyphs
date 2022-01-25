@@ -1,0 +1,31 @@
+stages:
+  - build
+  - test
+
+default:
+  image: "node:16.13.2-alpine"
+
+install-deps:
+  stage: build
+  script:
+    - yarn install
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules/
+
+build-app:
+  stage: build
+  script:
+    - yarn build
+  artifacts:
+    paths:
+      - build/
+    expire_in: 1 hour
+
+run-tests:
+  stage: test
+  script:
+    - CI=true yarn test

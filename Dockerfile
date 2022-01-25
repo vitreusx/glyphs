@@ -15,6 +15,7 @@ EXPOSE 3000
 CMD ["yarn", "start"]
 
 FROM build AS test
+ENV CI=true
 CMD ["yarn", "test"]
 
 FROM nginx:stable-alpine AS prod
