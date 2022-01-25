@@ -4,7 +4,7 @@ stages:
 
 default:
   image: "node:16.13.2-alpine"
-  before-script:
+  before_script:
     - echo 'yarn-offline-mirror ".yarn-cache/"' >> .yarnrc
     - echo 'yarn-offline-mirror-pruning true' >> .yarnrc
     - yarn install --frozen-lockfile --no-progress
